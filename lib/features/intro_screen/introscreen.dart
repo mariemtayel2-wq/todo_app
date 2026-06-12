@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:evently_app/core/resources/color_manager/color_manger.dart';
 import 'package:evently_app/core/resources/imagemanger/image_manger.dart';
 import 'package:evently_app/core/resources/provider/theme_provider.dart';
@@ -10,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Introduction extends StatelessWidget {
-  static const String routeName = 'intro';
+
 
   const Introduction({super.key});
 
@@ -22,13 +23,11 @@ class Introduction extends StatelessWidget {
   }) {
     return PageViewModel(
       titleWidget: const SizedBox(),
-      bodyWidget: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
+      bodyWidget: SingleChildScrollView(
             child: Column(
               children: [
                 Image.asset(
-                  'assets/images/Evently.png',
+                  ImageManager.splash_logo,
                   width: 0.5.sw,
                 ),
                 SizedBox(height: 16.h),
@@ -59,9 +58,8 @@ class Introduction extends StatelessWidget {
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        
       decoration: const PageDecoration(pageColor: Colors.transparent),
     );
   }
@@ -74,23 +72,23 @@ class Introduction extends StatelessWidget {
     final pages = [
       buildPage(
         image: ImageManager.intro2,
-        title: 'Find Events That Inspire You',
+        title: 'Find Events That Inspire You'.tr(),
         body:
-            'Dive into a world of events crafted to fit your unique interests. Whether you are into live music, art workshops, professional networking, or simply discovering new experiences, we have something for everyone. Our curated recommendations will help you explore, connect, and make the most of every opportunity around you.',
+            'Dive into a world of events crafted to fit your unique interests. Whether you are into live music, art workshops, professional networking, or simply discovering new experiences, we have something for everyone. Our curated recommendations will help you explore, connect, and make the most of every opportunity around you.'.tr(),
         isDarkMode: isDarkMode,
       ),
       buildPage(
         image: ImageManager.intro3,
-        title: 'Effortless Event Planning',
+        title: 'Effortless Event Planning'.tr(),
         body:
-            'Take the hassle out of organizing events with our all-in-one planning tools. From setting up invites and managing RSVPs to scheduling reminders and coordinating details, we’ve got you covered. Plan with ease and focus on what matters – creating an unforgettable experience for you and your guests.',
+            'Take the hassle out of organizing events with our all-in-one planning tools. From setting up invites and managing RSVPs to scheduling reminders and coordinating details, we’ve got you covered. Plan with ease and focus on what matters – creating an unforgettable experience for you and your guests.'.tr(),
         isDarkMode: isDarkMode,
       ),
       buildPage(
         image: ImageManager.intro4,
-        title: 'Connect with Friends & Share Moments',
+        title: 'Connect with Friends & Share Moments'.tr(),
         body:
-            'Make every event memorable by sharing the experience with others. Our platform lets you invite friends, keep everyone in the loop, and celebrate moments together. Capture and share the excitement with your network, so you can relive the highlights and cherish the memories.',
+            'Make every event memorable by sharing the experience with others. Our platform lets you invite friends, keep everyone in the loop, and celebrate moments together. Capture and share the excitement with your network, so you can relive the highlights and cherish the memories.'.tr(),
         isDarkMode: isDarkMode,
       ),
      
@@ -104,22 +102,22 @@ class Introduction extends StatelessWidget {
         showBackButton: true,
         showSkipButton: true,
         skip: Text(
-          "Skip",
+           "skip".tr(),
           style: TextStyle(
             color: isDarkMode ? Colors.white :AppColorLight.mainColor,
             fontWeight: FontWeight.bold,
           ),
         ),
         next: Text(
-          "Next",
+          "next".tr(),
           style: TextStyle(color: isDarkMode ? Colors.white : AppColorLight.mainColor),
         ),
         back: Text(
-          "Back",
+          "back".tr(),
           style: TextStyle(color: isDarkMode ? Colors.white : AppColorLight.mainColor),
         ),
         done: Text(
-          "Done",
+          "done".tr(),
           style: TextStyle(color: isDarkMode ? Colors.white : AppColorLight.mainColor),
         ),
         globalBackgroundColor: isDarkMode ? AppColorDark.background : AppColorLight.stroke,
@@ -135,7 +133,7 @@ class Introduction extends StatelessWidget {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setBool('intro_seen', true);
           if (!context.mounted) return;
-          Navigator.pushReplacementNamed(context,Routemanger.homeRoute);
+          Navigator.pushReplacementNamed(context,Routemanger.loginRoute);
         },
       ),
     );
