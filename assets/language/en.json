@@ -36,6 +36,8 @@
     "forget_password": "Forget Password?",
     "dont_have_account": "Don’t have an account?",
     "or": "Or",
+  "forget password": "Forget password",
+  "reset-password": "Reset password",
     "login_with_google": "Login with Google",
     "enter_name": "Enter your name",
     "create_account": "Create your account",

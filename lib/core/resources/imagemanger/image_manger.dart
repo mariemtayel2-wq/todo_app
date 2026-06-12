@@ -10,4 +10,6 @@
     static const String intro3 = '${baseUrl}intro3.png';
     static const String intro4 = '${baseUrl}illustraion.png';
   static const String google = '${baseUrl}image 6.png';
-}
+  static const String forget = '${baseUrl}change-setting.png';
+
+ }

@@ -114,7 +114,7 @@ class _LoginState extends State<Login> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      // forget screen
+                     Navigator.pushReplacementNamed(context, Routemanger.forgetscreen);
                     },
                     child: Text(
                       "forgot_password".tr(),

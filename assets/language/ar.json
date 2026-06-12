@@ -35,6 +35,8 @@
     "forget_password": "هل نسيت كلمة المرور؟",
     "dont_have_account": "ليس لديك حساب؟",
     "or": "أو",
+  "forget password": "نسيت الباسورد",
+"reset-password": "مسح الباسورد",
     "login_with_google": "تسجيل الدخول باستخدام جوجل",
     "enter_name": "أدخل اسمك",
     "create_account": "إنشاء حسابك",
