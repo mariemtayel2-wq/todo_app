@@ -5,8 +5,9 @@
 
   static const String splash_logo = '${baseUrl}Evently.png';
     static const String splash_branding = '${baseUrl}Logo.png';
-   
+  static const String intro1 = '${baseUrl}being-creative.png';
     static const String intro2 = '${baseUrl}intro2.png';
     static const String intro3 = '${baseUrl}intro3.png';
     static const String intro4 = '${baseUrl}illustraion.png';
+  static const String google = '${baseUrl}image 6.png';
 }

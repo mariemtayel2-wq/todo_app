@@ -26,18 +26,19 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigateNext() async {
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 10));
     if (!mounted) return;
 
     await SharedPreferences.getInstance();
-   // bool introSeen = prefs.getBool('intro_seen') ?? false;
+    final prefs = await SharedPreferences.getInstance();
+    bool introSeen = prefs.getBool('intro_seen') ?? false;
 
     Navigator.pushReplacementNamed(
       context,
-        Routemanger.introductionRoute,
+        introSeen ? Routemanger.loginRoute : Routemanger.settingRoute,
     );
   }
-///introSeen ? Routemanger.profileRoute :
+
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<AppThemProvider>(context);
@@ -46,23 +47,30 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: themeProvider.apptheme == ThemeMode.dark
           ? AppColorDark.background
           : AppColorLight.background,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              ImageManager.splash_logo,
-              width: 0.9.sw,
-            ),
-            SizedBox(height: 0.4.sh),
-            Image.asset(
-              ImageManager.splash_branding,
-              width: 0.6.sw,
-            ),
+      body:
+     Center(
+       child: Column(
 
-          ],
-        ),
-      ),
+              mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    ImageManager.splash_logo,
+                    width: 0.6.sw,
+                    fit: BoxFit.contain,
+                  ),
+                  SizedBox(height: 250.h),
+                 
+                  Image.asset(
+                    ImageManager.splash_branding,
+                    width: 0.45.sw,
+                    fit: BoxFit.contain,
+                  ),
+                ],
+              ),
+     ),
+     
+        
+      
     );
   }
 }
