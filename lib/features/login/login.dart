@@ -9,16 +9,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/route_manger/routemanger.dart';
 
 class Login extends StatefulWidget {
- const Login({super.key});
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController emailcontroller = TextEditingController();
+late  TextEditingController _emailcontroller ;
 
-  TextEditingController passwordcontroller = TextEditingController();
+late  TextEditingController _passwordcontroller ;
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _emailcontroller=TextEditingController();
+    _passwordcontroller=TextEditingController();
+  }
+
 
   late final formkey = GlobalKey<FormState>();
 
@@ -32,9 +41,13 @@ class _LoginState extends State<Login> {
         child: Form(
           key: formkey,
           child: Column(
-            spacing:20.h,
+            spacing: 20.h,
             children: [
-              Image.asset(ImageManager.splash_logo, width: 0.5.sw, fit: BoxFit.contain),
+              Image.asset(
+                ImageManager.splash_logo,
+                width: 0.5.sw,
+                fit: BoxFit.contain,
+              ),
 
               Text(
                 "login_to_account".tr(),
@@ -62,15 +75,15 @@ class _LoginState extends State<Login> {
                 filled: true,
                 maxline: 1,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Email is required";
+                  if (value == null || value.trim().isEmpty) {
+                    return "email_reqierd".tr();
                   }
-                  if (!value.contains("@")) {
-                    return "Enter a valid email";
+                  if (!emailValid(value)) {
+                    return "email_invalid".tr();
                   }
                   return null;
                 },
-                controller: emailcontroller,
+                controller: _emailcontroller,
               ),
               CustumTextFormFieled(
                 borderside: AppColorLight.secondaryText,
@@ -100,9 +113,9 @@ class _LoginState extends State<Login> {
                       : Icon(Icons.visibility_off),
                 ),
 
-                controller: passwordcontroller,
+                controller: _passwordcontroller,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return "Password is required".tr();
                   }
 
@@ -114,7 +127,7 @@ class _LoginState extends State<Login> {
                 children: [
                   TextButton(
                     onPressed: () {
-                     Navigator.pushReplacementNamed(context, Routemanger.forgetscreen);
+                      // forget screen
                     },
                     child: Text(
                       "forgot_password".tr(),
@@ -138,9 +151,7 @@ class _LoginState extends State<Login> {
                     fontWeight: FontWeight(600),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, Routemanger.registerRoute);
-                },
+                onPressed: login,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -157,9 +168,7 @@ class _LoginState extends State<Login> {
                   TextButton(
                     onPressed: () {
                       // context.pushRoute(RegisterRoute());
-                      // if (formkey.currentState!.validate()) {
-                      //   context.pushRoute(RegisterRoute());
-                      // }
+
                     },
                     child: Text(
                       "signup".tr(),
@@ -186,7 +195,11 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 10.w,
                   children: [
-                    Image.asset(ImageManager.google, width: 24.sp, height: 24.sp),
+                    Image.asset(
+                      ImageManager.google,
+                      width: 24.sp,
+                      height: 24.sp,
+                    ),
                     Text(
                       "login_with_google".tr(),
                       style: TextStyle(
@@ -205,4 +218,14 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+  void login()
+  {
+    if(formkey.currentState!.validate()==false)return;
+  }
+bool emailValid(String email) {
+  return RegExp(
+    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+  ).hasMatch(email);
+}
+
 }

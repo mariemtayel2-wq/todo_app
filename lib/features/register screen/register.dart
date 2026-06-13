@@ -1,4 +1,3 @@
-
 // ignore_for_file: must_be_immutable
 
 import 'package:easy_localization/easy_localization.dart';
@@ -11,17 +10,29 @@ import '../../core/widget/custum elevated buuton.dart';
 import '../../core/widget/custum-textformfield.dart';
 
 class Register extends StatefulWidget {
-
- const Register({super.key});
+  const Register({super.key});
 
   @override
   State<Register> createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
-   TextEditingController emailcontroller = TextEditingController();
+  late TextEditingController _emailcontroller;
 
-  TextEditingController passwordcontroller = TextEditingController();
+  late TextEditingController _passwordcontroller;
+
+  late TextEditingController _namecontroller;
+
+  late TextEditingController _confirmpasswordcontroller;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailcontroller = TextEditingController();
+    _namecontroller = TextEditingController();
+    _passwordcontroller = TextEditingController();
+    _confirmpasswordcontroller = TextEditingController();
+  }
 
   late final formkey = GlobalKey<FormState>();
 
@@ -29,25 +40,30 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Padding(
         padding: EdgeInsetsGeometry.symmetric(vertical: 50.h, horizontal: 16.w),
         child: Form(
           key: formkey,
           child: Column(
-            spacing:15.h,
+            spacing: 15.h,
             children: [
-              Image.asset(ImageManager.splash_logo, width: 0.5.sw, fit: BoxFit.contain),
+              Image.asset(
+                ImageManager.splash_logo,
+                width: 0.5.sw,
+                fit: BoxFit.contain,
+              ),
 
               Text(
-                  "create_account".tr(),
+                "create_account".tr(),
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight(600),
                   color: AppColorLight.mainColor, // هيتغير
                 ),
-              ),   CustumTextFormFieled(
-
+              ),
+              CustumTextFormFieled(
+                controller: _namecontroller,
                 prefixicon: Icon(
                   Icons.person_outline_outlined,
                   color: AppColorLight.disable,
@@ -85,18 +101,17 @@ class _RegisterState extends State<Register> {
                 filled: true,
                 maxline: 1,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Email is required";
+                  if (value == null || value.trim().isEmpty) {
+                    return "email_reqierd".tr();
                   }
-                  if (!value.contains("@")) {
-                    return "Enter a valid email";
+                  if (!emailValid(value)) {
+                    return "email_invalid".tr();
                   }
                   return null;
                 },
-                controller: emailcontroller,
+                controller: _emailcontroller,
               ),
               CustumTextFormFieled(
-               
                 obscureText: ontab,
                 hinttext: "password".tr(),
 
@@ -123,39 +138,54 @@ class _RegisterState extends State<Register> {
                       : Icon(Icons.visibility_off),
                 ),
 
-                controller: passwordcontroller,
+                controller: _passwordcontroller,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return "Password is required".tr();
+                  }
+                  if (value.length < 6) {
+                    return "password_too_short".tr();
                   }
 
                   return null;
                 },
-              ),    CustumTextFormFieled(
-                    fillcolor: AppColorLight.white,
-                    filled: true,
-                    hinttext:"confirm_password".tr(),
-                    hintstyle: TextStyle(color: AppColorLight.secondaryText),
-                    prefixicon: Icon(
-                      Icons.lock_outlined,
-                      color: AppColorLight.secondaryText,
-                    ),
-                    suffixicon: IconButton(
-                      onPressed: () {
-                        ontab ? ontab = false : ontab = true;
-                        setState(() {});
-                      },
-                      icon: ontab
-                          ? Icon(
-                              Icons.visibility,
-                              color: AppColorLight.secondaryText,
-                            )
-                          : Icon(
-                              Icons.visibility_off,
-                              color: AppColorLight.secondaryText,
-                            ),
-                    ),
-                  ),
+              ),
+              CustumTextFormFieled(
+                controller: _confirmpasswordcontroller,
+                fillcolor: AppColorLight.white,
+                filled: true,
+                hinttext: "confirm_password".tr(),
+                hintstyle: TextStyle(color: AppColorLight.secondaryText),
+                prefixicon: Icon(
+                  Icons.lock_outlined,
+                  color: AppColorLight.secondaryText,
+                ),
+                suffixicon: IconButton(
+                  onPressed: () {
+                    ontab ? ontab = false : ontab = true;
+                    setState(() {});
+                  },
+                  icon: ontab
+                      ? Icon(
+                          Icons.visibility,
+                          color: AppColorLight.secondaryText,
+                        )
+                      : Icon(
+                          Icons.visibility_off,
+                          color: AppColorLight.secondaryText,
+                        ),
+                ),
+                validator: (input) {
+                  if (input == null || input.trim().isEmpty) {
+                    return "Re_Password is required".tr();
+                  }
+                  if (input != _passwordcontroller.text) {
+                    return "Re_password does not match".tr();
+                  }
+
+                  return null;
+                },
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -185,7 +215,7 @@ class _RegisterState extends State<Register> {
                     fontWeight: FontWeight(600),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: _createacount,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -201,7 +231,6 @@ class _RegisterState extends State<Register> {
 
                   TextButton(
                     onPressed: () {
-                      // context.pushRoute(RegisterRoute());
                       // if (formkey.currentState!.validate()) {
                       //   context.pushRoute(RegisterRoute());
                       // }
@@ -231,7 +260,11 @@ class _RegisterState extends State<Register> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 10.w,
                   children: [
-                    Image.asset(ImageManager.google, width: 24.sp, height: 24.sp),
+                    Image.asset(
+                      ImageManager.google,
+                      width: 24.sp,
+                      height: 24.sp,
+                    ),
                     Text(
                       "signup_with_google".tr(),
                       style: TextStyle(
@@ -249,5 +282,15 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
+  }
+
+  bool emailValid(String email) {
+    return RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    ).hasMatch(email);
+  }
+
+  void _createacount() {
+    if (formkey.currentState!.validate() == false) return;
   }
 }
